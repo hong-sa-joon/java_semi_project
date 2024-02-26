@@ -66,10 +66,9 @@ public class RoomReservationApplication {
         switch (roomselect) {
             case "SingleRoom":
                 newRoomReservation = new RoomReservation(name, day, roomselect, people);
-                System.out.println("dddddd");
                 break;
             case "DoubleRoom":
-                newRoomReservation = new DoubleRoomReservation(name, day, roomselect, people);
+                newRoomReservation = new DoubleRoomReservation(name, day, roomselect, people );
                 break;
             case "TwinRoom":
                 newRoomReservation = new TwinRoomReservation(name, day, roomselect, people);
@@ -78,7 +77,14 @@ public class RoomReservationApplication {
                 newRoomReservation = new SweetRoomReservation(name, day, roomselect, people);
                 break;
         }
+        if (people>newRoomReservation.getPeople()){
+            System.out.println("인원이 초과되었습니다.");
+        }else {
+
         roomList.add(newRoomReservation);
+
+        }
+
         }
 
     //모든 예약 정보 확인

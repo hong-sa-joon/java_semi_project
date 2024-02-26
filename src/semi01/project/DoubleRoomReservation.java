@@ -1,16 +1,15 @@
 package semi01.project;
 
 public class DoubleRoomReservation extends RoomReservation {
-    double sale;
 
+    double discount;
 
     public DoubleRoomReservation(String name, int day, String room, int people) {
         super(name, day, room, people);
-
+        this.discount = 0.05;
         super.room = "Double Room";
         super.money = 200000;
-        this.sale = 0.05;
-        super.people=2;
+        super.people = 2;
 
     }
 
@@ -20,6 +19,10 @@ public class DoubleRoomReservation extends RoomReservation {
 
             money = super.calcPrice();
         }
-            return money;
+        return money;
     }
-}
+
+    @Override
+    public String showRoominfo() {
+
+    }
