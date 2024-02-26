@@ -104,8 +104,8 @@ public class RoomReservation {
     }
 
     //3박 이상 예약시 할인(Single제외)
-    public int calcPrice() {
-        int price = (money - (int) (this.money * discount)) * day;
+    public int calcPrice(int price) {
+        int sale = (money - (int) (this.money * discount)) * day;
         return price;
     }
 

@@ -8,6 +8,7 @@ import semi01.project.TwinRoomReservation;
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.SimpleTimeZone;
 
 public class RoomReservationApplication {
     private static Scanner scanner = new Scanner(System.in);
@@ -19,7 +20,7 @@ public class RoomReservationApplication {
 
         while (reserve) {
             System.out.println("=====================");
-            System.out.println("1.예약 | 2. 예약 확인 |");
+            System.out.println("1.예약 | 2. 예약목록 확인 | 3.예약자 확인 ");
             System.out.println("=====================");
 
 
@@ -33,7 +34,12 @@ public class RoomReservationApplication {
                 case 2:
                     showAllroom();
                     break;
+
                 case 3:
+                    String name=scanner.next();
+                    System.out.println(findpeople(name).showRoominfo());
+                break;
+                case 4:
                     reserve = false;
             }
         }
@@ -61,6 +67,7 @@ public class RoomReservationApplication {
         int people = scanner.nextInt();
 
 
+
         RoomReservation newRoomReservation = null;
 
         switch (roomselect) {
@@ -69,6 +76,9 @@ public class RoomReservationApplication {
                 break;
             case "DoubleRoom":
                 newRoomReservation = new DoubleRoomReservation(name, day, roomselect, people );
+                if (day>=3){
+                    newRoomReservation.calcPrice();
+                }
                 break;
             case "TwinRoom":
                 newRoomReservation = new TwinRoomReservation(name, day, roomselect, people);
@@ -80,9 +90,7 @@ public class RoomReservationApplication {
         if (people>newRoomReservation.getPeople()){
             System.out.println("인원이 초과되었습니다.");
         }else {
-
         roomList.add(newRoomReservation);
-
         }
 
         }
@@ -95,6 +103,20 @@ public class RoomReservationApplication {
         }
     }
 
+    //예약 정보 학인
+
+    public static RoomReservation findpeople(String name){
+
+
+       RoomReservation resultpeople = null;
+        for (RoomReservation roomReservation : roomList) {
+           if ((roomReservation.getName()).equals(name)){
+               resultpeople = roomReservation;
+               break;
+           }
+        }
+        return resultpeople;
+    }
 
 }
 

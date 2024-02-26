@@ -14,15 +14,12 @@ public class DoubleRoomReservation extends RoomReservation {
     }
 
     @Override
-    public int calcPrice() {
-        if (day > 3) {
+    public int calcPrice(int price) {
+        if (day >= 3) {
 
-            money = super.calcPrice();
+            int sale = (money - (int) (this.money * discount)) * day;
         }
         return money;
     }
 
-    @Override
-    public String showRoominfo() {
-
-    }
+}
