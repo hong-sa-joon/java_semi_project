@@ -1,18 +1,8 @@
-package semi01.project.application;
-
-import semi01.project.DoubleRoomReservation;
-import semi01.project.RoomReservation;
-import semi01.project.SweetRoomReservation;
-import semi01.project.TwinRoomReservation;
-
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.SimpleTimeZone;
 
 public class RoomReservationApplication {
     private static Scanner scanner = new Scanner(System.in);
-    //RoomReservation객체 저장가능 50개
     private static ArrayList<RoomReservation> roomList = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -20,104 +10,168 @@ public class RoomReservationApplication {
 
         while (reserve) {
             System.out.println("=====================");
-            System.out.println("1.예약 | 2. 예약목록 확인 | 3.예약자 확인 ");
+            System.out.println("1. 룸 예약 | 2. 예약 내역 확인 | 3. 지불 내역 확인 | 4. 모든 룸 정보 보기 | 5. 모든 고객 예약 정보 보기 | 6. 특정 고객 예약 정보 보기 | 7. 종료");
             System.out.println("=====================");
 
+            System.out.print("선택 > ");
+            int select = scanner.nextInt();
 
-            System.out.println("선택 >");
-
-            int select = scanner.nextInt();//입력받기
             switch (select) {
                 case 1:
-                    createroom();
+                    reserveRoom();
                     break;
                 case 2:
-                    showAllroom();
+                    showReservationList();
                     break;
-
                 case 3:
-                    String name=scanner.next();
-                    System.out.println(findpeople(name).showRoominfo());
-                break;
+                    showPaymentDetails();
+                    break;
                 case 4:
+                    showAllRoomInfo();
+                    break;
+                case 5:
+                    showAllCustomerInfo();
+                    break;
+                case 6:
+                    showSpecificCustomerInfo();
+                    break;
+                case 7:
                     reserve = false;
+                    break;
             }
         }
+
         System.out.println("프로그램 종료");
     }
 
-    private static void createroom() {
-
-        //예약하기
+    private static void reserveRoom() {
         System.out.println("=====================");
-        System.out.println("예약하기");
+        System.out.println("룸 예약");
         System.out.println("=====================");
 
-        System.out.println("예약자명: ");
+        System.out.print("예약자명: ");
         String name = scanner.next();
 
-        System.out.println("예약 일수: ");
+        System.out.print("예약 일수: ");
         int day = scanner.nextInt();
 
+        System.out.print("예약할 룸 (SingleRoom, DoubleRoom, TwinRoom, SweetRoom): ");
+        String roomType = scanner.next();
 
-        System.out.println("예약할 룸: ");
-        String roomselect = scanner.next();
-
-        System.out.println("인원 수: ");
+        System.out.print("인원 수: ");
         int people = scanner.nextInt();
 
+        RoomReservation newReservation = null;
 
-
-        RoomReservation newRoomReservation = null;
-
-        switch (roomselect) {
+        // 룸 타입에 따라 객체 생성
+        switch (roomType) {
             case "SingleRoom":
-                newRoomReservation = new RoomReservation(name, day, roomselect, people);
+                newReservation = new RoomReservation(name, day, roomType, people);
                 break;
             case "DoubleRoom":
-                newRoomReservation = new DoubleRoomReservation(name, day, roomselect, people );
-                if (day>=3){
-                    newRoomReservation.calcPrice();
-                }
+                newReservation = new DoubleRoomReservation();
                 break;
             case "TwinRoom":
-                newRoomReservation = new TwinRoomReservation(name, day, roomselect, people);
+                newReservation = new TwinRoomReservation();
                 break;
             case "SweetRoom":
-                newRoomReservation = new SweetRoomReservation(name, day, roomselect, people);
+                newReservation = new SweetRoomReservation();
                 break;
+            default:
+                System.out.println("잘못된 룸 타입입니다.");
+                return;
         }
-        if (people>newRoomReservation.getPeople()){
+
+        // 인원 제한 체크
+        if (people > newReservation.getPeople()) {
             System.out.println("인원이 초과되었습니다.");
-        }else {
-        roomList.add(newRoomReservation);
-        }
-
-        }
-
-    //모든 예약 정보 확인
-    public static void showAllroom() {
-        System.out.println("====== 모든 예약 정보 확인======");
-        for (RoomReservation roomReservation : roomList) {
-            System.out.println(roomReservation.showRoominfo());
+        } else {
+            roomList.add(newReservation);
+            System.out.println("예약이 완료되었습니다.");
         }
     }
 
-    //예약 정보 학인
+    private static void showReservationList() {
+        System.out.println("=====================");
+        System.out.println("예약 내역 확인");
+        System.out.println("=====================");
 
-    public static RoomReservation findpeople(String name){
-
-
-       RoomReservation resultpeople = null;
-        for (RoomReservation roomReservation : roomList) {
-           if ((roomReservation.getName()).equals(name)){
-               resultpeople = roomReservation;
-               break;
-           }
+        for (RoomReservation reservation : roomList) {
+            System.out.println(reservation.showRoominfo());
         }
-        return resultpeople;
     }
 
+    private static void showPaymentDetails() {
+        System.out.println("=====================");
+        System.out.println("지불 내역 확인");
+        System.out.println("=====================");
+
+        for (RoomReservation reservation : roomList) {
+            System.out.println("룸 이름: " + reservation.getRoom());
+            System.out.println("예약 일수: " + reservation.getDay());
+            System.out.println("조식 제공 여부: " + reservation.getMorning());
+            System.out.println("지불 금액: " + reservation.calcPrice());
+            System.out.println("------------------------");
+        }
+    }
+
+    private static void showAllRoomInfo() {
+        System.out.println("=====================");
+        System.out.println("모든 룸 정보 보기");
+        System.out.println("=====================");
+
+        for (RoomReservation reservation : roomList) {
+            printRoomInfo(reservation);
+        }
+    }
+
+    private static void showAllCustomerInfo() {
+        System.out.println("=====================");
+        System.out.println("모든 고객 예약 정보 보기");
+        System.out.println("=====================");
+
+        for (RoomReservation reservation : roomList) {
+            System.out.println("룸 이름: " + reservation.getRoom());
+            System.out.println("예약 일수: " + reservation.getDay());
+            System.out.println("조식 제공 여부: " + reservation.getMorning());
+            System.out.println("------------------------");
+        }
+    }
+
+    private static void showSpecificCustomerInfo() {
+        System.out.println("=====================");
+        System.out.println("특정 고객 예약 정보 보기");
+        System.out.println("=====================");
+
+        System.out.print("예약자명을 입력하세요: ");
+        String customerName = scanner.next();
+
+        RoomReservation customerReservation = findCustomerReservation(customerName);
+
+        if (customerReservation != null) {
+            System.out.println("룸 이름: " + customerReservation.getRoom());
+            System.out.println("예약 일수: " + customerReservation.getDay());
+            System.out.println("조식 제공 여부: " + customerReservation.getMorning());
+            System.out.println("------------------------");
+        } else {
+            System.out.println("해당 고객의 예약 정보가 없습니다.");
+        }
+    }
+
+    private static RoomReservation findCustomerReservation(String name) {
+        for (RoomReservation reservation : roomList) {
+            if (reservation.getName().equals(name)) {
+                return reservation;
+            }
+        }
+        return null;
+    }
+
+    private static void printRoomInfo(RoomReservation room) {
+        System.out.println("룸 이름: " + room.getRoom());
+        System.out.println("가격: " + room.getMoney() + "원");
+        System.out.println("인원 제한: " + (room.getPeople() > 0 ? room.getPeople() + "명" : "없음"));
+        System.out.println("조식 제공 여부: " + room.getMorning());
+        System.out.println("------------------------");
+    }
 }
-
-

@@ -1,24 +1,24 @@
 package semi01.project;
 
 public class SweetRoomReservation extends RoomReservation{
-
  double discount;
-    public SweetRoomReservation(String name, int day, String room, int people) {
-        super(name, day, room, people);
+    int people;
 
-        super.room = "Twin Room";
-        super.money = 500000;
+
+    public SweetRoomReservation() {
         this.discount = 0.2;
-        this.morning="Yes";
-        super.people = people;
-
+        super.room = "Sweet Room";
+        super.money = 500000;
+        super.people = -1; // 인원 제한 없음
+        super.morning = false; // 조식 무료 제공 여부 설정
     }
-    @Override
-    public int calcPrice(int price) {
-        if (day >= 3) {
 
-            int sale = (money - (int) (this.money * discount)) * day;
+    @Override
+    public int calcPrice() {
+        if (!room.equalsIgnoreCase("Single Room") && day >= 3) {
+            return (int) (money * day * (1 - (discount / 100.0)));
+        } else {
+            return money * day;
         }
-        return money;
     }
 }
