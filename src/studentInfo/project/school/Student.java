@@ -1,13 +1,13 @@
 package studentInfo.project.school;
 
-
 import java.util.ArrayList;
+
 
 public class Student {
     private int studentId; // 학번
     private String studentName; // 이름
     private Subject majorSubject; // 필수과목
-    private ArrayList<Score> scoreList; // 점수 리스트
+    private ArrayList<Score> scoreList = new ArrayList<>(); // 점수 리스트
 
     public Student(int studentId, String studentName, Subject majorSubject) {
         this.studentId = studentId;

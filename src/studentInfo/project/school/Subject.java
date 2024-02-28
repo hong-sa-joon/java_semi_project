@@ -8,7 +8,7 @@ public class Subject {
     private String subjectName; // 과목명
     private int subjectId; // 과목코드
     private int gradeType; // 학점 평가 정책(필수과목, 일반과목)
-    private ArrayList<Student> studentList; // 과목을 수강신청한 학생 리스트
+    private ArrayList<Student> studentList = new ArrayList<>(); // 과목을 수강신청한 학생 리스트
 
     public Subject(String subjectName, int subjectId) {
         this.subjectName = subjectName;
