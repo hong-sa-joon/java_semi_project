@@ -4,7 +4,7 @@ public class RoomReservation {
     // 필드
     protected int day;      // 예약 일수
     protected String name;  // 예약자명
-    protected int money;    // 룸에 따른 가격
+    protected int money;// 룸에 따른 가격
 
     private int discount;   // 3박 할인시 할인률(싱글은 x)
 
@@ -12,7 +12,7 @@ public class RoomReservation {
 
     protected int people;    // 인원수
 
-    public String room;    // 룸
+    protected String room;// 룸
 
     // 생성자
     public RoomReservation() {
@@ -103,11 +103,10 @@ public class RoomReservation {
                 "룸 가격: " + (money * day) + "원" +
                 "\n할인 후 가격: " + calcPrice();
     }
-
     // 3박 이상 예약시 할인(Single 제외)
     public int calcPrice() {
         if (!room.equalsIgnoreCase("Single Room") && day >= 3) {
-            return (int) (money * day * (1 - (discount / 100.0)));
+            return (this.money*day)-(int) ((money * day )*discount);
         } else {
             return money * day;
         }

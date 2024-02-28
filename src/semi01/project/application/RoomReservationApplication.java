@@ -1,3 +1,10 @@
+package semi01.project.application;
+
+import semi01.project.DoubleRoomReservation;
+import semi01.project.RoomReservation;
+import semi01.project.SweetRoomReservation;
+import semi01.project.TwinRoomReservation;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -69,13 +76,13 @@ public class RoomReservationApplication {
                 newReservation = new RoomReservation(name, day, roomType, people);
                 break;
             case "DoubleRoom":
-                newReservation = new DoubleRoomReservation();
+                newReservation = new DoubleRoomReservation(name, day, roomType, people);
                 break;
             case "TwinRoom":
-                newReservation = new TwinRoomReservation();
+                newReservation = new TwinRoomReservation(name, day, roomType, people);
                 break;
             case "SweetRoom":
-                newReservation = new SweetRoomReservation();
+                newReservation = new SweetRoomReservation(name, day, roomType,people);
                 break;
             default:
                 System.out.println("잘못된 룸 타입입니다.");
@@ -83,7 +90,7 @@ public class RoomReservationApplication {
         }
 
         // 인원 제한 체크
-        if (people > newReservation.getPeople()) {
+        if (people > newReservation.getPeople()&&newReservation.getPeople()!=-1) {
             System.out.println("인원이 초과되었습니다.");
         } else {
             roomList.add(newReservation);
@@ -120,9 +127,18 @@ public class RoomReservationApplication {
         System.out.println("모든 룸 정보 보기");
         System.out.println("=====================");
 
-        for (RoomReservation reservation : roomList) {
-            printRoomInfo(reservation);
-        }
+        // 각 룸의 기본 정보 출력
+        RoomReservation singleRoom = new RoomReservation();
+        printRoomInfo(singleRoom);
+
+        RoomReservation doubleRoom = new DoubleRoomReservation("", 0, "", 0);
+        printRoomInfo(doubleRoom);
+
+        RoomReservation twinRoom = new TwinRoomReservation("", 0, "", 0);
+        printRoomInfo(twinRoom);
+
+        RoomReservation sweetRoom = new SweetRoomReservation("", 0, "", 0);
+        printRoomInfo(sweetRoom);
     }
 
     private static void showAllCustomerInfo() {
@@ -167,11 +183,18 @@ public class RoomReservationApplication {
         return null;
     }
 
-    private static void printRoomInfo(RoomReservation room) {
-        System.out.println("룸 이름: " + room.getRoom());
-        System.out.println("가격: " + room.getMoney() + "원");
-        System.out.println("인원 제한: " + (room.getPeople() > 0 ? room.getPeople() + "명" : "없음"));
-        System.out.println("조식 제공 여부: " + room.getMorning());
+    private static void printRoomInfo(RoomReservation reservation) {
+        System.out.println("룸 이름: " + reservation.getRoom());
+        System.out.println("가격: " + reservation.getMoney() + "원");
+        System.out.println("인원 제한: " + (reservation.getPeople() > 0 ? reservation.getPeople() + "명" : "없음"));
+
+        // SweetRoomReservation의 경우 조식 제공 여부 출력
+        if (reservation instanceof SweetRoomReservation) {
+            System.out.println("조식 제공 여부: " + ((SweetRoomReservation) reservation).getMorning());
+        }else{
+            System.out.println("조식 제공 여부: 없음");
+        }
+
         System.out.println("------------------------");
     }
 }
